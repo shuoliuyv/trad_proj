@@ -11,13 +11,9 @@ In numerical algorithms, pointers are more useful for low-level kernels because 
 Storage order affects how data is laid out in memory, which directly affects cache performance. In row-major storage, elements in the same row are contiguous. In column-major storage, elements in the same column are contiguous.
 
 In our matrix-vector multiplication, the row-major version accesses
-$$
-A[i \cdot \text{cols} + j],
-$$
+$A[i \cdot \text{cols} + j],$
 so the inner loop reads contiguous memory. The column-major version accesses
-$$
-A[j \cdot \text{rows} + i],
-$$
+$A[j \cdot \text{rows} + i],$
 which leads to strided access relative to the layout used in the benchmark. That is why the row-major version becomes faster as the matrix gets larger. For example, at $$N=1024$$, the row-major version took about `3.197 ms`, while the column-major version took about `5.537 ms`.
 
 For matrix-matrix multiplication, the naive version accesses a column of `B` in the inner loop, which is not cache-friendly in row-major storage. The transposed-`B` version changes this into contiguous access, so it performs better. At $$N=1024$$, the naive version took about `6624.3 ms`, while the transposed-`B` version took about `3847.6 ms`.
